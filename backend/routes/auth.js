@@ -1,11 +1,15 @@
 const Express = require("express")
-const router = Express.Router()
+const router = Express.Router() // Capital R in router and call it
+const User = require("../models/User") // User model
 
-router.get("/", (req, res) => {
-    obj = {
-        name: "light"
-    }
-    res.send(obj) // whatever is inside res.send will be shown when we go the endpoint connected
+// Creating a user using "POST /api/auth" (Doesn't require authentication)
+
+// router.post >> router.get (for data protection?)
+router.post("/", (req, res) => {
+    const user = User(req.body) // req.body is json data
+    user.save() // save user in our database (mongodb)
+
+    res.send(req.body) // output
     console.log(req.body)
 })
 
