@@ -56,7 +56,7 @@ npm nodemon ./index.js
     - The process is almost same as we created **Notes** model
     - Here is code for **User.js**
         ```
-        import mongoose from 'mongoose';
+        const mongoose = require("mongoose");
         const { Schema } = mongoose;
 
         const userSchema = new Schema({
@@ -119,3 +119,68 @@ npm nodemon ./index.js
     app.use("/api/auth", require("./routes/auth"))
     app.use("/api/notes", require("./routes/notes"))
     ```
+## Part 3
+#### We are going to validate user input for loging in and store the data in mongo database
+- Before doing anything let's connect our console to the terminal by this single line of code
+    ```
+    app.use(express.json()) // connects console to our terminal?
+    ```
+- Now let's set up our `auth.js` file
+ - To validate user input we are going to use **express-validator** so let's download it using npm
+   ```
+   npm i --save express-validator
+   ```
+ - Now import `User` model and `express-validator` in `auth.js` file
+    ```
+    const User = require("../models/User") // User model
+    const { body, validationResult } = require('express-validator'); // To validate the user input ne
+    ```
+ - Now we are going to change our **router.get** to **router.post** in `auth.js` for better data protection
+
+ - In the next step we are going to apply `express-validator` function
+
+ - So the second argument in the **router.post** function is going to be a list in which we are going to set up validation requirements for user input (You can find reference for this at https://express-validator.github.io/docs/)
+    ```
+    router.post("/", [
+        body('email', "Please enter a valid email").isEmail(), // second value in body is the error message
+        body('name', "Name length should be > 3").isLength({ min: 3 }),
+        body('password', "Password length should be > 5").isLength({ min: 5 }),
+        ],
+    ```
+
+ - Now we are going to make some changes in our `(req, res)` function so that we can use `express-validator` functions 
+    ```
+    router.post("/", [
+        body('email', "Please enter a valid email").isEmail(), // second value in body is the error message
+        body('name', "Name length should be > 3").isLength({ min: 3 }),
+        body('password', "Password length should be > 5").isLength({ min: 5 }),
+    ],
+    // checkout https://express-validator.github.io/docs/ for reference
+    (req, res) => {
+        // Validate input and if something is wrong send error message
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        // Create a user and save it into the database
+        User.create({
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password,
+            }).then(user => res.json(user)) // don't use res.send after this (Ignorable)
+    ```
+ - What **User.create** is doing in the above code is it's storing the user's data in **mongoDb**
+ - Surely this will keep user from going ahead in case of bad input but if we leave it this way our app will crash in case of wrong or bad input
+ - To keep the app from crashing we are going to use **catch** function in javascript. Let's look at the code
+    ```
+    // catch function is handling the error due to invalid input and keeping the app from crashing
+        .catch(err => {
+            console.log(err),
+                res.json({
+                    error: "unexpected error oh no",
+                    message: err.message
+                })
+        })
+    ```
+ - Well this is it. Now we are all set up to store user's data in our database 
