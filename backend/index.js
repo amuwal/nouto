@@ -3,7 +3,7 @@ const express = require('express')
 
 connectToMongo(); // don't forget to connect to the databse
 const app = express() // define app
-const port = 3000
+const port = 5000
 
 app.use(express.json()) // connects console to our terminal?
 

@@ -184,3 +184,55 @@ npm nodemon ./index.js
         })
     ```
  - Well this is it. Now we are all set up to store user's data in our database 
+
+## Part 4
+#### Today we are going to encrypt our password before saving it in database using **bcrypt**. Then we are going to create a authentication token using **jwt**
+- First let's do the encryption process
+    - First of all install `bcrypt` using npm
+        ```
+        npm i bcrypt
+        ```
+    - Import bcrypt in `auth.js`
+        ```
+        const bcrypt = require("bcrypt");
+        ```
+    - Now let's generate **salt** to further strengthen the pass
+        ```
+        const salt = await bcrypt.genSalt(10)
+        ```
+    - Moving on to encrypt the password
+        ```
+        const encryptedPass = await bcrypt.hash(req.body.password, salt)
+        ```
+    - That's it, don't forget to store the user with the encrypted password in the databse
+        ```
+        user = await User.create({
+            name: req.body.name,
+            email: req.body.email,
+            password: encryptedPass,
+        })
+        ```
+- Now let's generate the **authentication token** using **gwt**
+    - First install **gwt** with npm
+        ```
+        npm i jsonwebtoken
+        ```
+    - import in `auth.js`
+        ```
+        const jwt = require("jsonwebtoken")
+        ```
+    
+    - Make sure you have a **secret** to sign the data. For now let's assume the secret to be following
+        ```
+        const verySecret = "korewahimitsu";
+        ```
+    - Now we need to decide what parameter we are going to provide token to user
+    based on. I will go for `userId` so...
+        ```
+        jwtData = {id:user.id}
+        ```
+    - Now just use jwt.sign to assign the token
+        ```
+        const authToken = jwt.sign(jwtData, verySecret)
+        ```
+    - That's it
