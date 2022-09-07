@@ -1,11 +1,13 @@
 const connectToMongo = require("./db") // function we created in db.js
 const express = require('express')
+var cors = require("cors")
 
 connectToMongo(); // don't forget to connect to the databse
 const app = express() // define app
 const port = 5000
 
 app.use(express.json()) // connects console to our terminal?
+app.use(cors())
 
 // Our Routes
 app.use("/api/auth", require("./routes/auth"))
