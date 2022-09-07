@@ -1,4 +1,3 @@
-import { response } from "express"
 import { useState } from "react"
 import NoteContext from "./noteContext"
 
@@ -58,30 +57,32 @@ const NoteState = (props) => {
         fetchAllNotes(); // Stop rendering new note
     }
 
-    // const updateNote = async(note) => {
-    //     const { title, description, tag } = note;
-    //     const url = `${host}/api/notes/updatenote/${note._id}`
-    //     const data = {title, description, tag}
+    const updateNote = async(note) => {
+        console.log("database", note)
+        const { id, updateTitle, updateDescription, updateTag } = note;
+        const url = `${host}/api/notes/updatenote/${id}`
+        const data = {title: updateTitle, description:updateDescription, tag:updateTag}
 
-    //     // eslint-disable-next-line
-    //     const response = await fetch(url, {
-    //         method: 'PUT', // *GET, POST, PUT, DELETE, etc.
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMGU4NzQ0NGU3ODM3YmMxOWE1ZjdjNiIsImlhdCI6MTY2MTg5NjUxNn0.ZgtBgy0knc3jPdSy412thzlBZQoHvEsKeM-RbHLs_tk"
-    //         },
-    //         body: JSON.stringify(data) // body data type must match "Content-Type" header
-    //     }
+        // eslint-disable-next-line
+        const response = await fetch(url, {
+            method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                'Content-Type': 'application/json',
+                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMGU4NzQ0NGU3ODM3YmMxOWE1ZjdjNiIsImlhdCI6MTY2MTg5NjUxNn0.ZgtBgy0knc3jPdSy412thzlBZQoHvEsKeM-RbHLs_tk"
+            },
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        }
         
-    //     );
-    //     // console.log(response.JSON())
+        );
+        const json = await response.json() // await
+        console.log(json, "res")
         
-    //     fetchAllNotes(); // Stop rendering new note
-    // }
+        fetchAllNotes(); // Stop rendering new note
+    }
 
     return (
         // capital P in Provider
-        <NoteContext.Provider value = {{ notes, setNotes, addNote, deleteNote, fetchAllNotes } } >
+        <NoteContext.Provider value = {{ notes, setNotes, addNote, deleteNote, fetchAllNotes, updateNote } } >
              { props.children } 
         </NoteContext.Provider>
     )

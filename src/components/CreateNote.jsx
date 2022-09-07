@@ -4,14 +4,16 @@ import noteContext from '../context/notes/noteContext'
 export const CreateNote = () => {
     const contextData = useContext(noteContext);
     const { addNote } = contextData;
-    const [note, setNote] = useState({title: "", description: "", tag: "default"})
+    const [note, setNote] = useState({title: "", description: "", tag: ""})
     const onChange = (e) => {
         setNote({...note, [e.target.name]: e.target.value})
     }
 
-    const onClick = (e) => {
+    const onClick = async(e) => {
+        console.log(e.target)
         e.preventDefault();
-        addNote(note.title, note.description, note.tag);
+        await addNote(note.title, note.description, note.tag);
+        setNote({title: "", description: "", tag: ""})
         
     }
 
@@ -26,6 +28,9 @@ export const CreateNote = () => {
                 className="form-control"
                 id="title"
                 name="title"
+                minLength={3}
+                value={note.title}
+                required
                 placeholder="Title"
                 onChange={onChange}
               />
@@ -37,11 +42,14 @@ export const CreateNote = () => {
                 id="description"
                 name="description"
                 rows="3"
+                minLength={3}
+                required
+                value={note.description}
                 onChange={onChange}
                 placeholder="Note content"
               ></textarea>
             </div>
-            <button className="btn btn-dark" onClick={onClick}>Save</button>
+            <button type='submit' className="btn btn-dark" onClick={onClick}>Save</button>
           </form>
           </div>
     </>

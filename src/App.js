@@ -5,6 +5,7 @@ import { Navbar } from "./components/Navbar";
 import { About } from "./components/About";
 import { Home } from "./components/Home";
 import NoteState from "./context/notes/NoteState";
+import { Login } from "./components/Login";
 
 function App() {
     
@@ -19,6 +20,9 @@ function App() {
             </Route>
             <Route exact path="/about">
               <About />
+            </Route>
+            <Route exact path="/login">
+              <Login />
             </Route>
           </Switch>
         </div>

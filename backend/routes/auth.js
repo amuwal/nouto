@@ -76,25 +76,25 @@ router.post("/login", [
             const user = await User.findOne(email)
                 // Send error message if user not found
             if (!user) {
-                return res.status(400).json("Please check your entries and try again")
+                return res.status(400).json({ success: false, msg: "Please check your entries and try again" })
             }
 
             // match the password provided from the password in database
             const match = await bcrypt.compare(req.body.password, user.password)
                 // Send error msg if password doen't match
             if (!match) {
-                return res.status(400).json("Please check your entries and try again")
+                return res.status(400).json({ success: false, msg: "Please check your entries and try again" })
             }
 
             // At this point we know provided input is valid so we provide a auth token in return
             const jwtData = { id: user.id }
             const token = jwt.sign(jwtData, verySecret)
 
-            res.json(token)
+            res.json({ success: true, token })
 
         } catch (error) {
             console.error(error.message)
-            res.status(500).send("Sorry bro")
+            res.status(500).send("Internal Error")
         }
     })
 

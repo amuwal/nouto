@@ -5,24 +5,32 @@ import { Noteitem } from "./Noteitem";
 export const Notes = () => {
   const contextData = useContext(noteContext);
   const { notes, fetchAllNotes } = contextData;
-//   const updateNoteDatabase = contextData.updateNote;
+  const updateNoteDatabase = contextData.updateNote;
 
   const [note, setNote] = useState({
-    title: "",
-    description: "",
-    tag: "default",
+    updateTitle: "",
+    updateDescription: "",
+    updateTag: "default",
   });
 
-  const onChange = (e) => {
-    setNote({ ...note, [e.target.name]: e.target.value });
-  };
 
-  const showModal = useRef();
+const showModal = useRef();
+const cancleRef = useRef();
 
-  const updateNote = (note) => {
+const updateNote = (currentNote) => {
     showModal.current.click();
-    setNote({updateTitle: note.title, updateDescription: note.description, updateTag: note.tag})
-  };
+    setNote({id: currentNote._id, updateTitle: currentNote.title, updateDescription: currentNote.description, updateTag: currentNote.tag})
+};
+
+const onChange = (e) => {
+  setNote({ ...note, [e.target.name]: e.target.value });
+};
+
+const handleSaveNote = () => {
+    updateNoteDatabase(note)
+    cancleRef.current.click();
+}
+
 
 
   useEffect(() => {
@@ -69,7 +77,7 @@ export const Notes = () => {
                       id="updateTitle"
                       name="updateTitle"
                       placeholder="Title"
-                      value={note.title}
+                      value={note.updateTitle}
                       onChange={onChange}
                     />
                   </div>
@@ -80,22 +88,36 @@ export const Notes = () => {
                       id="updateDescription"
                       name="updateDescription"
                       rows="3"
-                      value={note.description}
+                      value={note.updateDescription}
                       onChange={onChange}
                       placeholder="Note content"
                     ></textarea>
                   </div>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="updateTag"
+                      name="updateTag"
+                      placeholder="updateTag"
+                      value={note.updateTag}
+                      onChange={onChange}
+                    />
+                  </div>
+
+                  
                 </form>
               </div>
               <div className="modal-footer">
                 <button
+                  ref={cancleRef}
                   type="button"
                   className="btn btn-secondary"
                   data-dismiss="modal"
                 >
                   Close
                 </button>
-                <button type="button" className="btn btn-primary">
+                <button  type="button" className="btn btn-primary" onClick={handleSaveNote}>
                   Save changes
                 </button>
               </div>

@@ -25,6 +25,9 @@ export const Navbar = () => {
       <li className="nav-item">
         <Link className={`nav-link ${active("about")}`} to="/about">About</Link>
       </li>
+      <li className="nav-item">
+        <Link className={`nav-link ${active("login")}`} to="/login">Login</Link>
+      </li>
     </ul>
   </div>
 </nav>
