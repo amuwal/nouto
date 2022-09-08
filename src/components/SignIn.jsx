@@ -2,9 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-export const Login = (props) => {
-    const {showAlert} = props;
-  const [user, setUser] = useState({ email: "", password: "" });
+export const SignIn = (props) => {
+  const [user, setUser] = useState({ email: "", password: "", name: "", confirmPassword: "" });
 
   const onChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -14,7 +13,7 @@ export const Login = (props) => {
   const handleSubmit = async(e) => {
     e.preventDefault();
     const data = user;
-    const url = "http://localhost:5000/api/auth/login";
+    const url = "http://localhost:5000/api/auth/createuser";
     const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -23,16 +22,17 @@ export const Login = (props) => {
     body: JSON.stringify(data),
     });
     const json = await res.json(); // await
-    // console.log(json);
+    console.log(json);
 
     if (json.success){
         // Redirect and save authtoken in localstorage
         localStorage.setItem("token", json.token)
         history.push("/")
-        showAlert("Successfull", "success")
+        props.showAlert("Signed In", "success")
     }
+
     else{
-        showAlert("Error: Very BAd", "danger")
+        props.showAlert("Something is fishy you can't continue", "danger")
     }
   };
   return (
@@ -40,6 +40,18 @@ export const Login = (props) => {
       <div className="container col-4" style={{marginTop:"150px"}}>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
+          <input
+              type="text"
+              onChange={onChange}
+              className="form-control my-3"
+              id="name"
+              name="name"
+              aria-describedby="emailHelp"
+              placeholder="Username"
+              value={user.name}
+            />
+          </div>
+          <div>
             <input
               type="email"
               onChange={onChange}
@@ -47,7 +59,7 @@ export const Login = (props) => {
               id="email"
               name="email"
               aria-describedby="emailHelp"
-              placeholder="Enter email"
+              placeholder="Email"
               value={user.email}
             />
           </div>
@@ -60,6 +72,17 @@ export const Login = (props) => {
               name="password"
               placeholder="Password"
               value={user.password}
+            />
+          </div>
+          <div className="form-group my-3">
+            <input
+              type="password"
+              onChange={onChange}
+              className="form-control"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              value={user.confirmPassword}
             />
           </div>
           <button type="submit" className="btn btn-primary my-2">

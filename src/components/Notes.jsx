@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import noteContext from "../context/notes/noteContext";
 import { Noteitem } from "./Noteitem";
 
-export const Notes = () => {
+export const Notes = (props) => {
   const contextData = useContext(noteContext);
   const { notes, fetchAllNotes } = contextData;
   const updateNoteDatabase = contextData.updateNote;
@@ -29,6 +29,7 @@ const onChange = (e) => {
 const handleSaveNote = () => {
     updateNoteDatabase(note)
     cancleRef.current.click();
+    props.showAlert("Note Updated Successfully", "warning")
 }
 
 
@@ -131,6 +132,7 @@ const handleSaveNote = () => {
             key={note._id}
             updateNote={updateNote}
             note={note}
+            showAlert={props.showAlert}
           ></Noteitem>
         );
       })}

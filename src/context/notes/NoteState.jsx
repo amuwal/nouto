@@ -58,7 +58,6 @@ const NoteState = (props) => {
     }
 
     const updateNote = async(note) => {
-        console.log("database", note)
         const { id, updateTitle, updateDescription, updateTag } = note;
         const url = `${host}/api/notes/updatenote/${id}`
         const data = {title: updateTitle, description:updateDescription, tag:updateTag}
@@ -75,7 +74,7 @@ const NoteState = (props) => {
         
         );
         const json = await response.json() // await
-        console.log(json, "res")
+        
         
         fetchAllNotes(); // Stop rendering new note
     }

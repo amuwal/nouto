@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 export const Navbar = () => {
     const location = useLocation();
     const active = (path) => {
-        if (location.pathname == `/${path}`){ return "active" }
+        if (location.pathname === `/${path}`){ return "active" }
         else { return ""}
     }
     
@@ -27,6 +27,9 @@ export const Navbar = () => {
       </li>
       <li className="nav-item">
         <Link className={`nav-link ${active("login")}`} to="/login">Login</Link>
+      </li>
+      <li className="nav-item">
+        <Link className={`nav-link ${active("signin")}`} to="/signin">Signin</Link>
       </li>
     </ul>
   </div>

@@ -30,7 +30,7 @@ router.post("/createuser", [
             // Create a user and save it into the database
             let user = await User.findOne({ email: req.body.email }) // Check if user already exists
             if (user) {
-                return res.status(400).json({ error: "User with this email already exists" })
+                return res.status(400).json({ success: false, error: "User with this email already exists" })
             }
 
             const salt = await bcrypt.genSalt(10)
@@ -46,12 +46,12 @@ router.post("/createuser", [
             const jwtData = { id: user.id }
             const authToken = jwt.sign(jwtData, verySecret)
 
-            res.json(authToken)
-            console.log(authToken, encryptedPass)
+            res.json({ success: true, authToken })
+                // console.log(authToken, encryptedPass)
 
         } catch (error) {
             console.error(error.message)
-            res.status(500).send("Some error occurred. Now your fault though")
+            res.status(500).send({ success: false, msg: "Some error occurred. Now your fault though" })
         }
     })
 

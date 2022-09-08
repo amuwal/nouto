@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import noteContext from '../context/notes/noteContext'
 
-export const CreateNote = () => {
+export const CreateNote = (props) => {
     const contextData = useContext(noteContext);
     const { addNote } = contextData;
     const [note, setNote] = useState({title: "", description: "", tag: ""})
@@ -10,10 +10,10 @@ export const CreateNote = () => {
     }
 
     const onClick = async(e) => {
-        console.log(e.target)
         e.preventDefault();
         await addNote(note.title, note.description, note.tag);
         setNote({title: "", description: "", tag: ""})
+        props.showAlert("Note Added", "success")
         
     }
 
