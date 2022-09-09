@@ -1,8 +1,11 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { useHistory } from "react-router-dom";
 import noteContext from "../context/notes/noteContext";
 import { Noteitem } from "./Noteitem";
 
 export const Notes = (props) => {
+    const history = useHistory()
+
   const contextData = useContext(noteContext);
   const { notes, fetchAllNotes } = contextData;
   const updateNoteDatabase = contextData.updateNote;
@@ -35,7 +38,12 @@ const handleSaveNote = () => {
 
 
   useEffect(() => {
-    fetchAllNotes();
+    if (localStorage.getItem("token")){
+        fetchAllNotes();
+    }
+    else{
+        history.push("/login")
+    }
     //eslint-disable-next-line
   }, []);
 

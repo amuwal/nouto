@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 export const Login = (props) => {
-    const {showAlert} = props;
+  const { showAlert } = props;
   const [user, setUser] = useState({ email: "", password: "" });
 
   const onChange = (e) => {
@@ -11,34 +11,34 @@ export const Login = (props) => {
   };
   const history = useHistory();
 
-  const handleSubmit = async(e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const data = user;
     const url = "http://localhost:5000/api/auth/login";
     const res = await fetch(url, {
-    method: "POST",
-    headers: {
+      method: "POST",
+      headers: {
         "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+      },
+      body: JSON.stringify(data),
     });
     const json = await res.json(); // await
     // console.log(json);
 
-    if (json.success){
-        // Redirect and save authtoken in localstorage
-        localStorage.setItem("token", json.token)
-        history.push("/")
-        showAlert("Successfull", "success")
-    }
-    else{
-        showAlert("Error: Very BAd", "danger")
+    if (json.success) {
+      // Redirect and save authtoken in localstorage
+      localStorage.setItem("token", json.token);
+      history.push("/");      
+      window.location.reload();
+      showAlert("Successfull", "success");
+    } else {
+      showAlert("Error: Very BAd", "danger");
     }
   };
   return (
     <>
-      <div className="container col-4" style={{marginTop:"150px"}}>
-        <form onSubmit={handleSubmit}>
+      <div className="container col-4" style={{ marginTop: "150px" }}>
+        <form onSubmit={handleLogin}>
           <div className="form-group">
             <input
               type="email"
@@ -66,7 +66,7 @@ export const Login = (props) => {
             Submit
           </button>
         </form>
-        </div>
+      </div>
     </>
   );
 };

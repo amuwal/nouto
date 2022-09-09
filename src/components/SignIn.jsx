@@ -28,6 +28,7 @@ export const SignIn = (props) => {
         // Redirect and save authtoken in localstorage
         localStorage.setItem("token", json.token)
         history.push("/")
+        window.location.reload();
         props.showAlert("Signed In", "success")
     }
 

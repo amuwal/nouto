@@ -4,14 +4,14 @@ import NoteContext from "./noteContext"
 const NoteState = (props) => {
     const host = "http://localhost:5000"
     const [notes, setNotes] = useState([])
-
+    const authToken = localStorage.getItem("token")
     // Fetching all notes via /api/notes/fetchnotes
     const fetchAllNotes = async() => {
         const url = `${host}/api/notes/fetchnotes`
         const response = await fetch(url, {
             method: 'GET', // *GET, POST, PUT, DELETE, etc.
             headers: {
-            "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMGU4NzQ0NGU3ODM3YmMxOWE1ZjdjNiIsImlhdCI6MTY2MTg5NjUxNn0.ZgtBgy0knc3jPdSy412thzlBZQoHvEsKeM-RbHLs_tk"
+            "auth-token": authToken
             },
             // body: JSON.stringify(data) // body data type must match "Content-Type" header
         });
@@ -31,7 +31,7 @@ const NoteState = (props) => {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             headers: {
                 'Content-Type': 'application/json',
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMGU4NzQ0NGU3ODM3YmMxOWE1ZjdjNiIsImlhdCI6MTY2MTg5NjUxNn0.ZgtBgy0knc3jPdSy412thzlBZQoHvEsKeM-RbHLs_tk"
+                "auth-token": authToken
             },
             body: JSON.stringify(data) // body data type must match "Content-Type" header
         }
@@ -48,7 +48,7 @@ const NoteState = (props) => {
         const response = await fetch(url, {
             method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
             headers: {
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMGU4NzQ0NGU3ODM3YmMxOWE1ZjdjNiIsImlhdCI6MTY2MTg5NjUxNn0.ZgtBgy0knc3jPdSy412thzlBZQoHvEsKeM-RbHLs_tk"
+                "auth-token": authToken
             },
             // body: JSON.stringify(data) // body data type must match "Content-Type" header
         }
@@ -67,7 +67,7 @@ const NoteState = (props) => {
             method: 'PUT', // *GET, POST, PUT, DELETE, etc.
             headers: {
                 'Content-Type': 'application/json',
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMGU4NzQ0NGU3ODM3YmMxOWE1ZjdjNiIsImlhdCI6MTY2MTg5NjUxNn0.ZgtBgy0knc3jPdSy412thzlBZQoHvEsKeM-RbHLs_tk"
+                "auth-token": authToken
             },
             body: JSON.stringify(data) // body data type must match "Content-Type" header
         }
